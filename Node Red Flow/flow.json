@@ -1,0 +1,312 @@
+[
+    {
+        "id": "8fc7dd91.e8301",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a582cd5.431273",
+        "type": "debug",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 610,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "91009782.fd69b8",
+        "type": "ui_text",
+        "z": "8fc7dd91.e8301",
+        "group": "4e52fc0f.c72334",
+        "order": 2,
+        "width": 10,
+        "height": 2,
+        "name": "Query",
+        "label": "User Input",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 790,
+        "y": 240,
+        "wires": [],
+        "inputLabels": [
+            "asd"
+        ]
+    },
+    {
+        "id": "6df013ed.e3da4c",
+        "type": "watson-conversation-v1",
+        "z": "8fc7dd91.e8301",
+        "name": "ecobee3",
+        "workspaceid": "cb4012a2-5daf-44d4-9870-866c2e872760",
+        "multiuser": false,
+        "context": false,
+        "empty-payload": false,
+        "service-endpoint": "",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 780,
+        "y": 400,
+        "wires": [
+            [
+                "cd283a8e.47aa38",
+                "51948dd3.5e3d74"
+            ]
+        ]
+    },
+    {
+        "id": "53a46b5f.557e34",
+        "type": "ui_text",
+        "z": "8fc7dd91.e8301",
+        "group": "3a610ff8.ae3c5",
+        "order": 1,
+        "width": 15,
+        "height": "20",
+        "name": "Response",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1160,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d9867dcf.caae",
+        "type": "debug",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1170,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "cd283a8e.47aa38",
+        "type": "function",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "func": "msg.payload.text=\"\"; \nif(msg.payload.context.webhook_result_1)\n{ \n    for(var i in msg.payload.context.webhook_result_1.results)\n    { \n        msg.payload.text=msg.payload.text+\"<br>\"+msg.payload.context.webhook_result_1.results[i].subtitle;\n        msg.payload.text=msg.payload.text+\"<br><br>\"+msg.payload.context.webhook_result_1.results[i].text+\"<br>\"; \n    } \n    msg.payload=msg.payload.text; \n    \n} \nelse \nmsg.payload = msg.payload.output.text[0];\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 970,
+        "y": 320,
+        "wires": [
+            [
+                "d9867dcf.caae",
+                "53a46b5f.557e34"
+            ]
+        ]
+    },
+    {
+        "id": "2845b07a.afb5",
+        "type": "ui_form",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "label": "",
+        "group": "4e52fc0f.c72334",
+        "order": 4,
+        "width": 10,
+        "height": 2,
+        "options": [
+            {
+                "label": "Enter your Query",
+                "value": "query",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "query": ""
+        },
+        "payload": "",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "topic": "",
+        "x": 390,
+        "y": 320,
+        "wires": [
+            [
+                "a582cd5.431273",
+                "908688ec.465ab8"
+            ]
+        ]
+    },
+    {
+        "id": "908688ec.465ab8",
+        "type": "function",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "func": "msg.payload = msg.payload.query\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 320,
+        "wires": [
+            [
+                "6df013ed.e3da4c",
+                "91009782.fd69b8"
+            ]
+        ]
+    },
+    {
+        "id": "51948dd3.5e3d74",
+        "type": "debug",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 990,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "991544b0.752cd8",
+        "type": "ui_button",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "group": "4e52fc0f.c72334",
+        "order": 1,
+        "width": 10,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "cyan",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "",
+        "x": 230,
+        "y": 480,
+        "wires": [
+            [
+                "8f5ecc90.2f644"
+            ]
+        ]
+    },
+    {
+        "id": "8f5ecc90.2f644",
+        "type": "switch",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 480,
+        "wires": [
+            [
+                "3960d45f.1d4dec",
+                "c3c0db1a.b1ae68"
+            ]
+        ]
+    },
+    {
+        "id": "3960d45f.1d4dec",
+        "type": "function",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "func": "msg.payload = \"welcome\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 480,
+        "wires": [
+            [
+                "6df013ed.e3da4c"
+            ]
+        ]
+    },
+    {
+        "id": "779a9f83.d21de",
+        "type": "inject",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.0",
+        "x": 210,
+        "y": 380,
+        "wires": [
+            [
+                "8f5ecc90.2f644"
+            ]
+        ]
+    },
+    {
+        "id": "c3c0db1a.b1ae68",
+        "type": "function",
+        "z": "8fc7dd91.e8301",
+        "name": "",
+        "func": "msg.payload = \"\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 190,
+        "y": 240,
+        "wires": [
+            [
+                "2845b07a.afb5",
+                "91009782.fd69b8"
+            ]
+        ]
+    },
+    {
+        "id": "4e52fc0f.c72334",
+        "type": "ui_group",
+        "z": "",
+        "name": "Chatbox",
+        "tab": "5a1fa65c.febfb8",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "3a610ff8.ae3c5",
+        "type": "ui_group",
+        "z": "",
+        "name": "Bot Response",
+        "tab": "5a1fa65c.febfb8",
+        "order": 2,
+        "disp": true,
+        "width": "15",
+        "collapse": false
+    },
+    {
+        "id": "5a1fa65c.febfb8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Intelligent Customer Help Desk With Smart Document Understanding",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
